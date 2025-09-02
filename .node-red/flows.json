@@ -1,0 +1,602 @@
+[
+    {
+        "id": "2df8281b1f66ded5",
+        "type": "tab",
+        "label": "Level",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "77b63a88b4c3de09",
+        "type": "ui_dropdown",
+        "z": "2df8281b1f66ded5",
+        "name": "Mode Select",
+        "label": "Mode",
+        "tooltip": "",
+        "place": "Select mode",
+        "group": "dashboard_group",
+        "order": 1,
+        "width": 4,
+        "height": 1,
+        "options": [
+            {
+                "label": "Manual",
+                "value": 0,
+                "type": "num"
+            },
+            {
+                "label": "PID",
+                "value": 1,
+                "type": "num"
+            }
+        ],
+        "payload": "",
+        "topic": "",
+        "x": 90,
+        "y": 40,
+        "wires": [
+            [
+                "a931d35415253ca9"
+            ]
+        ]
+    },
+    {
+        "id": "a931d35415253ca9",
+        "type": "function",
+        "z": "2df8281b1f66ded5",
+        "name": "Format Mode",
+        "func": "msg.topic = \"plant/control/mode\";\nmsg.payload = JSON.stringify({ mode: msg.payload });\nreturn msg;",
+        "outputs": 1,
+        "x": 270,
+        "y": 40,
+        "wires": [
+            [
+                "6509a2408a07b52f"
+            ]
+        ]
+    },
+    {
+        "id": "b11f81be19f4a8cb",
+        "type": "function",
+        "z": "2df8281b1f66ded5",
+        "name": "Format Valve",
+        "func": "msg.topic = \"plant/control/valve\";\nmsg.payload = JSON.stringify({ valve: msg.payload });\nreturn msg;",
+        "outputs": 1,
+        "x": 330,
+        "y": 80,
+        "wires": [
+            [
+                "6509a2408a07b52f"
+            ]
+        ]
+    },
+    {
+        "id": "6509a2408a07b52f",
+        "type": "mqtt out",
+        "z": "2df8281b1f66ded5",
+        "name": "MQTT Out",
+        "topic": "",
+        "qos": "0",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "1cb6565b475a3458",
+        "x": 530,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "b7d3ba085f8e11ff",
+        "type": "mqtt in",
+        "z": "2df8281b1f66ded5",
+        "name": "PV Level",
+        "topic": "plant/data/level",
+        "qos": "0",
+        "datatype": "auto",
+        "broker": "1cb6565b475a3458",
+        "nl": false,
+        "rap": false,
+        "inputs": 0,
+        "x": 80,
+        "y": 220,
+        "wires": [
+            [
+                "0d6d0d7af76c3393",
+                "f34d8c3dfd9d94a9",
+                "945566e4026933ef"
+            ]
+        ]
+    },
+    {
+        "id": "0d6d0d7af76c3393",
+        "type": "ui_chart",
+        "z": "2df8281b1f66ded5",
+        "name": "Level Chart",
+        "group": "dashboard_group",
+        "order": 10,
+        "width": 17,
+        "height": 5,
+        "label": "Tank Level",
+        "chartType": "line",
+        "xformat": "HH:mm:ss",
+        "nodata": "",
+        "dot": false,
+        "ymin": "0",
+        "ymax": "50",
+        "removeOlder": "15",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "60",
+        "cutout": "",
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#f5003d",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 290,
+        "y": 220,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "e1db5214eb6b7cb4",
+        "type": "ui_text_input",
+        "z": "2df8281b1f66ded5",
+        "name": "Manual Valve % Input",
+        "label": "Valve % (Manual)",
+        "tooltip": "",
+        "group": "dashboard_group",
+        "order": 3,
+        "width": 4,
+        "height": 1,
+        "passthru": false,
+        "mode": "number",
+        "delay": 300,
+        "topic": "",
+        "sendOnBlur": true,
+        "className": "",
+        "topicType": "str",
+        "x": 120,
+        "y": 80,
+        "wires": [
+            [
+                "b11f81be19f4a8cb"
+            ]
+        ]
+    },
+    {
+        "id": "f34d8c3dfd9d94a9",
+        "type": "ui_level",
+        "z": "2df8281b1f66ded5",
+        "group": "dashboard_group",
+        "order": 9,
+        "width": 5,
+        "height": 5,
+        "name": "Tank Level",
+        "label": "",
+        "colorHi": "#e60000",
+        "colorWarn": "#ff9900",
+        "colorNormal": "#00b33c",
+        "colorOff": "#595959",
+        "min": 0,
+        "max": "50",
+        "segWarn": "",
+        "segHigh": "",
+        "unit": "cm",
+        "layout": "sv",
+        "channelA": "",
+        "channelB": "",
+        "decimals": "1",
+        "animations": "soft",
+        "shape": 2,
+        "colorschema": "fixed",
+        "textoptions": "default",
+        "colorText": "#eeeeee",
+        "fontLabel": "",
+        "fontValue": "",
+        "fontSmall": "",
+        "colorFromTheme": true,
+        "textAnimations": false,
+        "hideValue": false,
+        "tickmode": "off",
+        "peakmode": false,
+        "property": "payload",
+        "peaktime": 3000,
+        "x": 290,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "945566e4026933ef",
+        "type": "function",
+        "z": "2df8281b1f66ded5",
+        "name": "function 14",
+        "func": "// Cycle Time Calculator\nlet lastTime = context.get(\"lastTime\") || Date.now();\nlet now = Date.now();\nlet dt = (now - lastTime) / 1000.0; // in seconds\ncontext.set(\"lastTime\", now);\n\nmsg.topic = \"plant/monitor/cycle_time\";\nmsg.payload = dt.toFixed(3);  // keep 3 decimal places\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 110,
+        "y": 300,
+        "wires": [
+            [
+                "42d363115931ca19"
+            ]
+        ]
+    },
+    {
+        "id": "42d363115931ca19",
+        "type": "ui_text",
+        "z": "2df8281b1f66ded5",
+        "group": "dashboard_group",
+        "order": 11,
+        "width": 22,
+        "height": 1,
+        "name": "",
+        "label": "text",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 290,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "f58b2edd2d0eddd9",
+        "type": "ui_text_input",
+        "z": "2df8281b1f66ded5",
+        "name": "sp",
+        "label": "Setpoint (cm)",
+        "tooltip": "",
+        "group": "dashboard_group",
+        "order": 4,
+        "width": 4,
+        "height": 1,
+        "passthru": true,
+        "mode": "number",
+        "delay": 300,
+        "topic": "sp",
+        "sendOnBlur": true,
+        "className": "",
+        "topicType": "str",
+        "x": 230,
+        "y": 180,
+        "wires": [
+            [
+                "d5fa1403ef57e247",
+                "0d6d0d7af76c3393"
+            ]
+        ]
+    },
+    {
+        "id": "1392c3a57372a9c1",
+        "type": "ui_text_input",
+        "z": "2df8281b1f66ded5",
+        "name": "Kp",
+        "label": "Kp",
+        "tooltip": "",
+        "group": "dashboard_group",
+        "order": 5,
+        "width": 4,
+        "height": 1,
+        "passthru": true,
+        "mode": "number",
+        "delay": 300,
+        "topic": "Kp",
+        "sendOnBlur": true,
+        "className": "",
+        "topicType": "str",
+        "x": 470,
+        "y": 240,
+        "wires": [
+            [
+                "cd9dc7ad786bbae6"
+            ]
+        ]
+    },
+    {
+        "id": "1b30ebe7ead4622c",
+        "type": "ui_text_input",
+        "z": "2df8281b1f66ded5",
+        "name": "Ki",
+        "label": "Ki",
+        "tooltip": "",
+        "group": "dashboard_group",
+        "order": 6,
+        "width": 4,
+        "height": 1,
+        "passthru": true,
+        "mode": "number",
+        "delay": 300,
+        "topic": "Ki",
+        "sendOnBlur": true,
+        "className": "",
+        "topicType": "str",
+        "x": 470,
+        "y": 280,
+        "wires": [
+            [
+                "f869c2a33bf60d48"
+            ]
+        ]
+    },
+    {
+        "id": "91335a091cadcc1f",
+        "type": "ui_text_input",
+        "z": "2df8281b1f66ded5",
+        "name": "Kd",
+        "label": "Kd",
+        "tooltip": "",
+        "group": "dashboard_group",
+        "order": 7,
+        "width": 4,
+        "height": 1,
+        "passthru": true,
+        "mode": "number",
+        "delay": 300,
+        "topic": "Kd",
+        "sendOnBlur": true,
+        "className": "",
+        "topicType": "str",
+        "x": 470,
+        "y": 320,
+        "wires": [
+            [
+                "05672308cb84f8a7"
+            ]
+        ]
+    },
+    {
+        "id": "df5909d962f994a2",
+        "type": "ui_button",
+        "z": "2df8281b1f66ded5",
+        "name": "",
+        "group": "dashboard_group",
+        "order": 8,
+        "width": 4,
+        "height": 1,
+        "passthru": false,
+        "label": "Enter",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "",
+        "payloadType": "num",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 230,
+        "y": 120,
+        "wires": [
+            [
+                "0eaa08a2d3a205a4"
+            ]
+        ]
+    },
+    {
+        "id": "0eaa08a2d3a205a4",
+        "type": "function",
+        "z": "2df8281b1f66ded5",
+        "name": "function 16",
+        "func": "// Fetch stored values from flow context\nlet sp  = flow.get(\"sp\")  || 0;\nlet Kp  = flow.get(\"Kp\")  || 0;\nlet Ki  = flow.get(\"Ki\")  || 0;\nlet Kd  = flow.get(\"Kd\")  || 0;\n\n// Construct JSON\nmsg.topic = \"plant/control/pid\";\nmsg.payload = {\n    sp: Number(sp),\n    Kp: Number(Kp),\n    Ki: Number(Ki),\n    Kd: Number(Kd)\n};\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 390,
+        "y": 120,
+        "wires": [
+            [
+                "6509a2408a07b52f"
+            ]
+        ]
+    },
+    {
+        "id": "d5fa1403ef57e247",
+        "type": "function",
+        "z": "2df8281b1f66ded5",
+        "name": "function 15",
+        "func": "// Store value from ui_text in flow memory\nflow.set(msg.topic, msg.payload);\nreturn null;   // don’t send further yet\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 410,
+        "y": 180,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "cd9dc7ad786bbae6",
+        "type": "function",
+        "z": "2df8281b1f66ded5",
+        "name": "function 17",
+        "func": "// Store value from ui_text in flow memory\nflow.set(msg.topic, msg.payload);\nreturn null;   // don’t send further yet\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 630,
+        "y": 240,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "f869c2a33bf60d48",
+        "type": "function",
+        "z": "2df8281b1f66ded5",
+        "name": "function 18",
+        "func": "// Store value from ui_text in flow memory\nflow.set(msg.topic, msg.payload);\nreturn null;   // don’t send further yet\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 630,
+        "y": 280,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "05672308cb84f8a7",
+        "type": "function",
+        "z": "2df8281b1f66ded5",
+        "name": "function 19",
+        "func": "// Store value from ui_text in flow memory\nflow.set(msg.topic, msg.payload);\nreturn null;   // don’t send further yet\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 630,
+        "y": 320,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "59cc1afe4ffad08c",
+        "type": "inject",
+        "z": "2df8281b1f66ded5",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "1",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "topic",
+        "payloadType": "msg",
+        "x": 90,
+        "y": 180,
+        "wires": [
+            [
+                "f58b2edd2d0eddd9"
+            ]
+        ]
+    },
+    {
+        "id": "73aa8d9c68047745",
+        "type": "ui_template",
+        "z": "2df8281b1f66ded5",
+        "group": "dashboard_group",
+        "name": "",
+        "order": 2,
+        "width": 18,
+        "height": 7,
+        "format": "<div style=\"text-align:center;\">\n  <h3>Live Experiment Camera</h3>\n  <img src=\"http://192.168.0.101:5000/video_feed\" width=\"600\" height=\"360\" style=\"border:2px solid #333; border-radius:8px;\">\n</div>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": true,
+        "templateScope": "local",
+        "className": "",
+        "x": 80,
+        "y": 120,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "dashboard_group",
+        "type": "ui_group",
+        "name": "Level",
+        "tab": "dashboard_tab",
+        "order": 1,
+        "disp": true,
+        "width": 22,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "1cb6565b475a3458",
+        "type": "mqtt-broker",
+        "name": "HiveMQ Cloud",
+        "broker": "c317ffda3bdc4af58eae7e771faeea0b.s1.eu.hivemq.cloud",
+        "port": "8883",
+        "tls": "57e5f3ad8065fdc3",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": true,
+        "protocolVersion": 4,
+        "keepalive": 60,
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "dashboard_tab",
+        "type": "ui_tab",
+        "name": "Level Control Dashboard",
+        "icon": "dashboard",
+        "order": 1,
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "57e5f3ad8065fdc3",
+        "type": "tls-config",
+        "name": "",
+        "cert": "",
+        "key": "",
+        "ca": "",
+        "certname": "",
+        "keyname": "",
+        "caname": "hivemq_root_ca.pem",
+        "servername": "",
+        "verifyservercert": true,
+        "alpnprotocol": ""
+    }
+]
